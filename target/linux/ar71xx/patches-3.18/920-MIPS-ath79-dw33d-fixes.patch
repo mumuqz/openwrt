@@ -1,0 +1,45 @@
+--- a/arch/mips/ath79/Kconfig
++++ b/arch/mips/ath79/Kconfig
+@@ -2,6 +2,22 @@
+ 
+ menu "Atheros AR71XX/AR724X/AR913X machine selection"
+ 
++config ATH79_MACH_DOMYWIFI_DW33D
++	bool "DomyWifi DW33D support"
++	select SOC_QCA955X
++	select ATH79_DEV_AP9X_PCI if PCI
++	select ATH79_DEV_ETH
++	select ATH79_DEV_GPIO_BUTTONS
++	select ATH79_DEV_LEDS_GPIO
++	select ATH79_DEV_M25P80
++	select ATH79_DEV_NFC
++	select ATH79_DEV_WMAC
++	select ATH79_DEV_USB
++	select MTD_NAND
++	select MTD_NAND_AR934X
++	select MTD_NAND_AR934X_HW_ECC
++	select MTD_NAND_ECC
++
+ config ATH79_MACH_ALFA_AP96
+ 	bool "ALFA Network AP96 board support"
+ 	select SOC_AR71XX
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -38,6 +38,7 @@
+ #
+ # Machines
+ #
++obj-$(CONFIG_ATH79_MACH_DOMYWIFI_DW33D)	+= mach-domywifi-dw33d.o
+ obj-$(CONFIG_ATH79_MACH_ALFA_AP96)	+= mach-alfa-ap96.o
+ obj-$(CONFIG_ATH79_MACH_ALFA_NX)	+= mach-alfa-nx.o
+ obj-$(CONFIG_ATH79_MACH_ALL0258N)	+= mach-all0258n.o
+--- a/arch/mips/ath79/machtypes.h
++++ b/arch/mips/ath79/machtypes.h
+@@ -16,6 +16,7 @@
+ 
+ enum ath79_mach_type {
+ 	ATH79_MACH_GENERIC = 0,
++	ATH79_MACH_DOMYWIFI_DW33D,	/* DomyWifi DW33D */
+ 	ATH79_MACH_ALFA_AP96,		/* ALFA Network AP96 board */
+ 	ATH79_MACH_ALFA_NX,		/* ALFA Network N2/N5 board */
+ 	ATH79_MACH_ALL0258N,		/* Allnet ALL0258N */

@@ -78,19 +78,23 @@ detect_mac80211() {
 		[ "$found" -gt 0 ] && continue
 
 		mode_band="g"
-		channel="11"
+		channel="auto"
 		htmode=""
 		ht_capab=""
+		tx_power="28"
+		ssid="DoMyGNet_$(cat /sys/class/ieee80211/${dev}/macaddress|awk -F ":" '{print $5""$6 }'| tr a-z A-Z)"
 
-		iw phy "$dev" info | grep -q 'Capabilities:' && htmode=HT20
-		iw phy "$dev" info | grep -q '2412 MHz' || { mode_band="a"; channel="36"; }
+		iw phy "$dev" info | grep -q 'Capabilities:' && htmode=HT40
+		iw phy "$dev" info | grep -q '2412 MHz' || { mode_band="a"; channel="149"; }
 
 		vht_cap=$(iw phy "$dev" info | grep -c 'VHT Capabilities')
 		cap_5ghz=$(iw phy "$dev" info | grep -c "Band 2")
 		[ "$vht_cap" -gt 0 -a "$cap_5ghz" -gt 0 ] && {
 			mode_band="a";
-			channel="36"
+			channel="149"
 			htmode="VHT80"
+			tx_power="30"
+			ssid="DoMyGNet_$(cat /sys/class/ieee80211/${dev}/macaddress|awk -F ":" '{print $5""$6 }'| tr a-z A-Z)_5G"
 		}
 
 		[ -n $htmode ] && append ht_capab "	option htmode	$htmode" "$N"
@@ -112,16 +116,16 @@ config wifi-device  radio$devidx
 	option type     mac80211
 	option channel  ${channel}
 	option hwmode	11${mode_band}
+	option txpower	${tx_power}
+	option country	US
 $dev_id
 $ht_capab
-	# REMOVE THIS LINE TO ENABLE WIFI:
-	option disabled 1
 
 config wifi-iface
 	option device   radio$devidx
 	option network  lan
 	option mode     ap
-	option ssid     OpenWrt
+	option ssid     ${ssid}
 	option encryption none
 
 EOF

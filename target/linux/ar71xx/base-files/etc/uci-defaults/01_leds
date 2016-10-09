@@ -9,6 +9,12 @@
 board=$(ar71xx_board_name)
 
 case "$board" in
+dw33d)
+	ucidef_set_led_usbdev "mmc" "MMC" "domy:blue:mmc" "1-1"
+	ucidef_set_led_usbdev "usb" "USB" "domy:blue:usb" "2-1"
+	ucidef_set_led_netdev "internet" "INTERNET" "domy:blue:internet" "eth0" "rx"
+	ucidef_set_led_wlan "wlan2g" "WLAN-2.4G" "domy:blue:wlan-2g" "phy1tpt"
+	;;
 airgateway)
 	ucidef_set_led_wlan "wlan" "WLAN" "ubnt:blue:wlan" "phy0tpt"
 	;;

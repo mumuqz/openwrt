@@ -15,6 +15,13 @@ ucidef_set_interface_loopback
 board=$(ar71xx_board_name)
 
 case "$board" in
+dw33d)
+	ucidef_set_interfaces_lan_wan "eth1" "eth0"
+	ucidef_add_switch "switch0" "1" "1"
+	ucidef_add_switch_vlan "switch0" "1" "0 2 3 4 5"
+	ucidef_add_switch_vlan "switch0" "2" "1 6"
+	;;
+
 all0315n |\
 all0258n |\
 ja76pf2|\

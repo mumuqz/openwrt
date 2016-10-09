@@ -6,6 +6,9 @@
 
 get_status_led() {
 	case $(ar71xx_board_name) in
+	dw33d)
+		status_led="domy:blue:status"
+		;;
 	alfa-nx)
 		status_led="alfa:green:led_8"
 		;;
